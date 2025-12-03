@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto de Implantação do Departamento de TI – Grupo Durazzo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a3a8f;
+            --secondary-color: #2d5bb5;
+            --accent-color: #f0b400;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --success-color: #28a745;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .presentation-container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide {
+            display: none;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            margin: 20px 0;
+            animation: fadeIn 0.8s ease;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+        
+        .slide-header {
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .slide-title {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        .slide-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .slide-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .content-section {
+            margin-bottom: 25px;
+        }
+        
+        .content-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        ul, ol {
+            padding-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            background-color: rgba(240, 180, 0, 0.15);
+            padding: 15px;
+            border-left: 4px solid var(--accent-color);
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .team-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .team-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .team-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .team-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .phase-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .phase-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border-top: 4px solid var(--primary-color);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+        
+        .phase-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .phase-icon {
+            background-color: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .benefit-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--success-color);
+            transition: transform 0.3s;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .benefit-icon {
+            color: var(--success-color);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .investment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .investment-table th, .investment-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .investment-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .investment-table tr:last-child td {
+            font-weight: bold;
+            background-color: #f8f9fa;
+        }
+        
+        .next-steps {
+            background-color: rgba(26, 58, 143, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            margin-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #e9ecef;
+            color: var(--dark-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #dde1e6;
+        }
+        
+        .slide-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #c5c5c5;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .indicator.active {
+            background-color: var(--primary-color);
+        }
+        
+        .logo-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border-radius: 12px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+        
+        .logo-text h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+        
+        .logo-text p {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .phase-container, .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-table, .investment-table {
+                font-size: 0.9rem;
+            }
+            
+            .team-table th, .team-table td, 
+            .investment-table th, .investment-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Grupo Durazzo</h1>
+                    <p>Projeto de Implantação do Departamento de TI</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="presentation-container">
+            <!-- Slide 1: Introdução -->
+            <div class="slide active" id="slide1">
+                <div class="slide-header">
+                    <h1 class="slide-title">Projeto de Implantação do Departamento de TI</h1>
+                    <div class="slide-number">1</div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="slide-subtitle">Grupo Durazzo - Proposta Executiva com Foco em Resultados Rápidos</h2>
+                    
+                    <div class="highlight">
+                        <p>Transformando a TI de um ponto de risco em uma vantagem estratégica para o crescimento do Grupo Durazzo.</p>
+                    </div>
+                    
+                    <p>Atualmente, o Grupo Durazzo (3 processadoras + 1 filial + 1 distribuidora) opera com TI centralizada em uma única pessoa, o que gera riscos operacionais e limitações para o crescimento.</p>
+                    
+                    <p>Esta proposta apresenta um plano estruturado em 4 fases para implantar um departamento de TI interno com dois profissionais especializados, garantindo controle, segurança e suporte dedicado.</p>
+                </div>
+                
+                <div class="content-section">
+                    <h3 class="content-title">Problemas Atuais</h3>
+                    <ul>
+                        <li><strong>Risco operacional:</strong> Dependência de um único colaborador</li>
+                        <li><strong>Falta de padronização:</strong> Processos não padronizados entre as unidades</li>
+                        <li><strong>Limitação para crescimento:</strong> Infraestrutura não preparada para expansão</li>
+                        <li><strong>Questões de segurança:</strong> Vulnerabilidades por falta de especialização dedicada</li>
+                    </ul>
+                </div>
+                
+                <div class="content-section">
+                    <h3 class="content-title">Oportunidade</h3>
+                    <p>Implantar um departamento de TI interno com dois profissionais especializados (Analista de Sistemas e Especialista em Redes), garantindo controle, manutenção, segurança e suporte dedicado.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 2: A Dupla Estratégica de TI -->
+            <div class="slide" id="slide2">
+                <div class="slide-header">
+                    <h1 class="slide-title">A Dupla Estratégica de TI</h1>
+                    <div class="slide-number">2</div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="slide-subtitle">Formação da equipe CLT cobre 100% das necessidades técnicas críticas</h2>
+                    
+                    <p>A proposta prevê a contratação de dois profissionais especializados que, juntos, cobrirão todas as necessidades técnicas do Grupo Durazzo:</p>
+                    
+                    <table class="team-table">
+                        <thead>
+                            <tr>
+                                <th>Profissional</th>
+                                <th>Especialidade</th>
+                                <th>Foco no Grupo Durazzo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Geovani J Neumann Dos Santos</strong></td>
+                                <td>Analista de Sistemas<br>ERP, integrações, bancos de dados, BI, suporte a sistemas</td>
+                                <td>Integração dos sistemas das unidades, gestão de dados, relatórios gerenciais e backups</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Jean Carlo dos Santos</strong></td>
+                                <td>Técnico em Redes e Infraestrutura, segurança, conectividade, suporte técnico</td>
+                                <td>Rede unificada, segurança cibernética e manutenção preventiva</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="content-section">
+                    <h3 class="content-title">Vantagens da Equipe Interna</h3>
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h4>Conhecimento Compartilhado</h4>
+                            <p>Dois especialistas com habilidades complementares que compartilham conhecimento sobre os sistemas do grupo.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4>Disponibilidade Total</h4>
+                            <p>Profissionais dedicados exclusivamente ao Grupo Durazzo, com disponibilidade em tempo integral.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Custo Reduzido</h4>
+                            <p>Custo menor comparado a consultorias externas, com maior envolvimento e comprometimento.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>Redução de Riscos</h4>
+                            <p>Fim da dependência de uma única pessoa, distribuindo o conhecimento e as responsabilidades.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3: Plano de Ação - Fases 1 e 2 -->
+            <div class="slide" id="slide3">
+                <div class="slide-header">
+                    <h1 class="slide-title">Plano de Ação em 4 Fases</h1>
+                    <div class="slide-number">3</div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="slide-subtitle">Estruturação progressiva com resultados desde o primeiro mês</h2>
+                    
+                    <div class="phase-container">
+                        <div class="phase-card">
+                            <div class="phase-title">
+                                <div class="phase-icon">1</div>
+                                FASE 1
+                            </div>
+                            <p><strong>DIAGNÓSTICO E PRIORIZAÇÃO (Mês 1)</strong></p>
+                            <ul>
+                                <li>Visita a todas as unidades (3 processadoras, filial, distribuidora)</li>
+                                <li>Mapeamento de toda infraestrutura, sistemas e processos</li>
+                                <li>Relatório de riscos e oportunidades com plano de ação priorizado</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="phase-card">
+                            <div class="phase-title">
+                                <div class="phase-icon">2</div>
+                                FASE 2
+                            </div>
+                            <p><strong>ESTABILIDADE E SEGURANÇA (Meses 2-4)</strong></p>
+                            <ul>
+                                <li>Reestruturação e implementação de rede de dados</li>
+                                <li>Manutenção e substituição de periféricos</li>
+                                <li>Implementação de segurança e backup</li>
+                                <li>Controle de acessos e inventário de licenças</li>
+                                <li>Central de atendimento (helpdesk)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight">
+                        <p><strong>Objetivo das primeiras fases:</strong> Estabilizar a infraestrutura, eliminar vulnerabilidades críticas e estabelecer processos básicos de TI que garantam a continuidade dos negócios.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 4: Plano de Ação - Fases 3 e 4 -->
+            <div class="slide" id="slide4">
+                <div class="slide-header">
+                    <h1 class="slide-title">Plano de Ação - Continuação</h1>
+                    <div class="slide-number">4</div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="slide-subtitle">Do suporte básico à inovação estratégica</h2>
+                    
+                    <div class="phase-container">
+                        <div class="phase-card">
+                            <div class="phase-title">
+                                <div class="phase-icon">3</div>
+                                FASE 3
+                            </div>
+                            <p><strong>INTEGRAÇÃO E EFICIÊNCIA (Meses 4-6)</strong></p>
+                            <ul>
+                                <li>Análise do ERP/ sistemas atuais e integração mínima viável</li>
+                                <li>Criação de relatórios gerenciais unificados (Excel/BI simples)</li>
+                                <li>Otimização da conectividade e monitoramento de rede</li>
+                                <li>Documentação técnica e treinamento básico para usuários</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="phase-card">
+                            <div class="phase-title">
+                                <div class="phase-icon">4</div>
+                                FASE 4
+                            </div>
+                            <p><strong>INOVAÇÃO E ESCALA (Meses 7-12)</strong></p>
+                            <ul>
+                                <li>Automação de processos manuais críticos</li>
+                                <li>Avaliação de novas tecnologias para o negócio</li>
+                                <li>Planejamento para expansão tecnológica</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight">
+                        <p><strong>Visão de longo prazo:</strong> Transformar a TI de um centro de custo para uma aliada estratégica no crescimento do Grupo Durazzo, habilitando inovação e eficiência operacional.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 5: Benefícios Tangíveis -->
+            <div class="slide" id="slide5">
+                <div class="slide-header">
+                    <h1 class="slide-title">Benefícios Tangíveis</h1>
+                    <div class="slide-number">5</div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="slide-subtitle">Resultados concretos que impactam diretamente o negócio</h2>
+                    
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h4>Redução de Risco</h4>
+                            <p>Fim da dependência de uma pessoa única, com distribuição de conhecimento e responsabilidades.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h4>Controle Total</h4>
+                            <p>Segurança de dados e infraestrutura monitorada 24/7 por profissionais dedicados.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h4>Eficiência Operacional</h4>
+                            <p>Sistemas integrados e processos otimizados reduzem retrabalho e aumentam produtividade.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h4>Suporte Ágil</h4>
+                            <p>Problemas resolvidos rapidamente em qualquer unidade através da central de atendimento.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Base para Crescimento</h4>
+                            <p>TI como aliada estratégica, não como custo, preparando o grupo para expansão.</p>
+                        </div>
+                        
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <h4>Retorno sobre Investimento</h4>
+                            <p>Custo menor que uma parada operacional, com ganhos de produtividade significativos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 6: Investimento Necessário -->
+            <div class="slide" id="slide6">
+                <div class="slide-header">
+                    <h1 class="slide-title">Investimento Necessário</h1>
+                    <div class="slide-number">6</div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="slide-subtitle">Custos estimados para implantação do Departamento de TI</h2>
+                    
+                    <p>O investimento é dividido em custos com pessoal (CLT) e custos com infraestrutura e licenças:</p>
+                    
+                    <table class="investment-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Custo Estimado</th>
+                                <th>Observação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>2 CLTs (Salários + Benefícios)</strong></td>
+                                <td>A definir conforme mercado</td>
+                                <td>Investimento principal – retorno garantido em produtividade</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Infraestrutura (servidores, firewall, backups)</strong></td>
+                                <td>R$ 40.000 – R$ 90.000</td>
+                                <td>Custo único – pode ser faseado conforme necessidade</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Licenças (sistemas, antivírus, etc.)</strong></td>
+                                <td>R$ 15.000 – R$ 30.000/ano</td>
+                                <td>Essencial para segurança e legalidade dos sistemas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Ano 1</strong></td>
+                                <td><strong>R$ 55.000 – R$ 120.000 + CLTs</strong></td>
+                                <td>Menor que o custo de uma parada operacional prolongada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="highlight">
+                        <p><strong>Observação importante:</strong> Valores acima são estimados para implantação. Necessário levantamento in loco para orçamento preciso. Muitas melhorias podem ser feitas com recursos existentes, otimizando o investimento.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 7: Próximos Passos -->
+            <div class="slide" id="slide7">
+                <div class="slide-header">
+                    <h1 class="slide-title">Próximos Passos Imediatos</h1>
+                    <div class="slide-number">7</div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="slide-subtitle">Como dar início à implantação do Departamento de TI</h2>
+                    
+                    <div class="next-steps">
+                        <ol>
+                            <li>
+                                <strong>Reunião de alinhamento com o diretor</strong> para validação do diagnóstico e ajustes na proposta conforme necessidades específicas do Grupo Durazzo.
+                            </li>
+                            <li>
+                                <strong>Uma semana de levantamento gratuito nas unidades</strong> para mapeamento detalhado da infraestrutura atual, sistemas em operação e processos existentes.
+                            </li>
+                            <li>
+                                <strong>Proposta formal de contratação CLT</strong> com metas de 12 meses claramente definidas e alinhadas com os objetivos estratégicos do grupo.
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3 class="content-title">Compromisso com Resultados</h3>
+                        <p>Esta proposta foi elaborada com foco em entregar resultados rápidos e tangíveis, começando pela estabilização da infraestrutura e evoluindo para iniciativas estratégicas que impulsionarão o crescimento do Grupo Durazzo.</p>
+                        
+                        <p>A equipe de TI proposta trará não apenas expertise técnica, mas também compreensão do negócio, alinhando a tecnologia aos objetivos corporativos.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navegação -->
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="prevBtn">
+                    <i class="fas fa-arrow-left"></i> Anterior
+                </button>
+                
+                <div class="slide-indicators" id="slideIndicators">
+                    <!-- Indicadores serão gerados via JavaScript -->
+                </div>
+                
+                <button class="btn btn-primary" id="nextBtn">
+                    Próximo <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideIndicators = document.getElementById('slideIndicators');
+            let currentSlide = 0;
+            
+            // Criar indicadores de slides
+            slides.forEach((slide, index) => {
+                const indicator = document.createElement('div');
+                indicator.classList.add('indicator');
+                if (index === 0) indicator.classList.add('active');
+                indicator.addEventListener('click', () => goToSlide(index));
+                slideIndicators.appendChild(indicator);
+            });
+            
+            // Função para ir para um slide específico
+            function goToSlide(n) {
+                slides[currentSlide].classList.remove('active');
+                document.querySelectorAll('.indicator')[currentSlide].classList.remove('active');
+                
+                currentSlide = n;
+                
+                // Ajustar se for além dos limites
+                if (currentSlide >= slides.length) currentSlide = 0;
+                if (currentSlide < 0) currentSlide = slides.length - 1;
+                
+                slides[currentSlide].classList.add('active');
+                document.querySelectorAll('.indicator')[currentSlide].classList.add('active');
+            }
+            
+            // Event listeners para navegação
+            prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+            nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+            
+            // Navegação por teclado
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+                if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+            });
+            
+            // Inicializar apresentação
+            goToSlide(0);
+        });
+    </script>
+</body>
+</html>
